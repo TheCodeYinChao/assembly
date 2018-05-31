@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bainuo.assembly.data.dao.coupon.CouponLogMapper">
+    <insert id="insertCouponLog">
+        INSERT INTO `bn_coupon_log` (
+            `operate_id`,
+            `coupon_id`,
+            `createtime`,
+            `remark`,
+            `source`
+        )
+        VALUES
+        <foreach collection="logs" item="log" separator=",">
+            (
+            #{log.operateId},
+            #{log.couponId},
+            #{log.createtime},
+            #{log.remark}
+            <choose>
+                <when test="log.source != null and log.source != ''">
+                    ,#{log.source}
+                </when>
+                <otherwise>
+                   ,1
+                </otherwise>
+            </choose>
+            )
+        </foreach>
+
+    </insert>
+
+    <select id="queryDataPage" parameterType="cn.bainuo.plugin.ParameterMap"
+            resultType="cn.bainuo.assembly.data.vo.coupon.CouponLog">
+        SELECT
+            id,
+            operate_id AS  operateId,
+            coupon_id AS couponId,
+            createtime,
+            remark,
+            isvalid,
+            source
+        FROM bn_coupon_log
+        <where>
+            isvalid=1
+            <if test="operateId != null and operateId !='' ">
+              AND operate_id = #{operateId}
+            </if>
+            <if test="couponId != null and couponId != ''">
+              AND coupon_id = #{couponId}
+            </if>
+            <if test="remark != null and remark != ''">
+              AND remark LIKE concat('%','${remark}','%')
+            </if>
+            <if test="source != null and source != ''">
+              AND  source = #{source}
+            </if>
+            <if test="createtime != null and endTime != null">
+              AND  createtime between  #{startTime} and  #{endTime}
+            </if>
+        </where>
+        ORDER  BY  createtime DESC
+    </select>
+</mapper>

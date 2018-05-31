@@ -1,0 +1,14 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: assembly-data
+  profiles:
+    active: dev
+info:
+  app:
+    name: @project.artifactId@
+    encoding: @project.build.sourceEncoding@
+    java:
+      source: @java.version@
+      target: @java.version@

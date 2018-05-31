@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bainuo.assembly.timer.dao.common.CommonMapper">
+    <select id="selectById" resultType="com.bainuo.assembly.timer.vo.TimerVo">
+        SELECT
+            id,
+            timer_flag AS timerFlag,
+            timer_name AS timerName,
+            switch_btn AS switchBtn,
+            isvalid
+        FROM
+            bn_timer
+        WHERE
+            isvalid = 1
+        AND timer_flag = #{id}
+    </select>
+</mapper>

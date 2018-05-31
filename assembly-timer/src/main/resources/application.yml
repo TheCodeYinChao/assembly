@@ -1,0 +1,22 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: assembly-timer
+  profiles:
+    active: dev
+eureka:
+  client:
+    healthcheck:
+        enabled: true
+    serviceUrl:
+        defaultZone: http://user:123456@localhost:8761/eureka
+  instance:
+      prefer-ip-address: true
+info:
+  app:
+    name: @project.artifactId@
+    encoding: @project.build.sourceEncoding@
+    java:
+      source: @java.version@
+      target: @java.version@

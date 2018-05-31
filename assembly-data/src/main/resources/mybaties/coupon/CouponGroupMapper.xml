@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bainuo.assembly.data.dao.coupon.CouponGroupMapper">
+    <update id="deletes">
+      UPDATE coupons_group SET isvalid =0 WHERE id
+      <foreach collection="ids" item="id" open="IN ( " close=")" separator=",">
+        #{id}
+      </foreach>
+    </update>
+    
+    <select id="queryDataPage" parameterType="cn.bainuo.plugin.ParameterMap"
+            resultType="cn.bainuo.assembly.data.vo.coupon.CouponsGroup">
+        SELECT
+            `id`,
+            `createtime`,
+            `isvalid`,
+            `is_out` AS isOut,
+            `group_name` AS groupName,
+            `tips`,
+            `plat_flag` AS platFlag
+        FROM `coupons_group`
+        <where>
+            isvalid = 1
+            <if test="isOut != null and isOut != ''">
+                AND  is_out = #{isOut}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                AND group_name LIKE CONCAT('${groupName}','%')
+            </if>
+            <if test="tips != null and tips != ''">
+                AND  tips LIKE CONCAT('${tips}','%')
+            </if>
+            <if test="platFlag != null and platFlag != ''">
+                AND plat_flag =#{platFlag}
+            </if>
+        </where>
+        ORDER BY createtime DESC
+    </select>
+    
+    <insert id="insertGroup" parameterType="cn.bainuo.assembly.data.vo.coupon.CouponsGroup"
+            useGeneratedKeys="true" keyProperty="id">
+            INSERT INTO `coupons_group`
+                <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="id != null and id != ''">
+                        `id`,
+                    </if>
+                    <if test="createtime != null and createtime != ''">
+                        `createtime`,
+                    </if>
+                    <if test="isvalid != null and isvalid != ''">
+                        `isvalid`,
+                    </if>
+                    <if test="isOut != null and isOut != ''">
+                        `is_out`,
+                    </if>
+                    <if test="groupName != null and groupName != ''">
+                        `group_name`,
+                    </if>
+                    <if test="tips != null and tips != ''">
+                        `tips`,
+                    </if>
+                    <if test="platFlag != null and platFlag != ''">
+                        `plat_flag`,
+                    </if>
+                </trim>
+            VALUES
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null and id != ''">
+                    #{id},
+                </if>
+                <if test="createtime != null and createtime != ''">
+                    #{createtime},
+                </if>
+                <if test="isvalid != null and isvalid != ''">
+                    #{isvalid},
+                </if>
+                <if test="isOut != null and isOut != ''">
+                    #{isOut},
+                </if>
+                <if test="groupName != null and groupName != ''">
+                    #{groupName},
+                </if>
+                <if test="tips != null and tips != ''">
+                    #{tips},
+                </if>
+                <if test="platFlag != null and platFlag != ''">
+                    #{platFlag},
+                </if>
+            </trim>
+    </insert>
+
+    <update id="updateGroup" parameterType="cn.bainuo.assembly.data.vo.coupon.CouponsGroup" >
+        UPDATE `coupons_group`
+        <set>
+            <if test="createtime != null and createtime != ''">
+                `createtime` = #{createtime},
+            </if>
+            <if test="isvalid != null and isvalid != ''">
+                `isvalid` = #{isvalid},
+            </if>
+            <if test="isOut != null and isOut != ''">
+                `is_out` = #{isOut},
+            </if>
+            <if test="groupName != null and groupName != ''">
+                `group_name` = #{groupName},
+            </if>
+            <if test="tips != null and tips != ''">
+                `tips` =  #{tips},
+            </if>
+            <if test="platFlag != null and platFlag != ''">
+                `plat_flag` = #{platFlag},
+            </if>
+        </set>
+        WHERE
+            (
+                `id` = #{id}
+            )
+    </update>
+    
+    <update id="deleteGroupCoupon">
+      UPDATE  group_relation_coupons SET  isvalid = 0
+       WHERE group_id = #{groupId}
+    </update>
+
+    <insert id="baindCoupons">
+      INSERT INTO  group_relation_coupons (
+          group_id,
+          coupon_id,
+          createtime
+      )
+      VALUE
+      <foreach collection="couponIds" item="couponId" separator=",">
+          (#{groupId},#{couponId},#{createtime})
+      </foreach>
+    </insert>
+    
+    <select id="selectById" resultType="cn.bainuo.assembly.data.vo.coupon.CouponsGroup">
+        SELECT
+          `id`,
+          `createtime`,
+          `isvalid`,
+          `is_out` AS isOut,
+          `group_name` AS groupName,
+          `tips`,
+          `plat_flag` AS platFlag
+         FROM coupons_group WHERE id =#{id} AND isvalid=1
+    </select>
+    
+    <select id="selectCount" resultType="int">
+        SELECT count(*)FROM coupons_group AS cg
+        WHERE
+        cg.isvalid = 1
+           AND cg.group_name = #{groupName}
+        <if test="groupId != null and groupId != ''">
+           AND cg.id != id
+        </if>
+    </select>
+
+
+    <select id="selectCouponGroupListPage" parameterType="cn.bainuo.plugin.ParameterMap" resultType="cn.bainuo.assembly.data.vo.coupon.Coupons">
+        SELECT
+        c.id, c.title,  c.type, c.STATUS, c.Money, c.NeedMoney, c.DaysType, c.Days, c.startline, c.class_type AS classType, c.connected_id AS connectedId,
+        c.connected_content AS connectedContent, c.user_type AS userType, c.isvalid, c.createtime, c.CanGetNum, c.is_initiative AS isInitiative, c.instruction
+        ,c.plat_falg AS  platFalg,c.limit_num AS limitNum
+        FROM coupons AS c
+        INNER JOIN group_relation_coupons AS g ON g.coupon_id = c.id
+        WHERE c.isvalid = 1 AND  g.isvalid = 1
+        AND g.group_id = #{groupId}
+        <if test="type != null and type != ''">
+            and c.type = #{type}
+        </if>
+        <if test="title != null and title != ''">
+            and c.title like concat('%',#{title},'%')
+        </if>
+        GROUP BY c.id
+        ORDER BY c.createtime DESC
+    </select>
+
+    <update id="deleteCouponFromGroup">
+      UPDATE group_relation_coupons
+      SET  isvalid = 0
+      WHERE  group_id=#{groupId}
+      AND coupon_id 
+      <foreach collection="couponIds" item="couponId" open="IN (" close=")" separator=",">
+        #{couponId}
+      </foreach>
+    </update>
+    
+    <select id="selectUnBindByGroupIdPage" parameterType="cn.bainuo.plugin.ParameterMap" resultType="cn.bainuo.assembly.data.vo.coupon.Coupons">
+        SELECT
+        c.id, c.title,  c.type, c.STATUS, c.Money, c.NeedMoney, c.DaysType, c.Days, c.startline, c.class_type, c.connected_id,
+        c.connected_content AS connectedContent, c.user_type AS userType, c.isvalid,
+        c.createtime, c.CanGetNum, c.is_initiative AS  isInitiative, c.instruction ,c.plat_falg AS platFalg
+        ,c.limit_num AS limitNum
+        FROM coupons AS c
+        WHERE c.isvalid = 1 AND  c.status = 2
+        AND NOT EXISTS (SELECT 1 FROM group_relation_coupons AS g WHERE g.coupon_id = c.id AND g.group_id = #{groupId})
+        <if test="type != null and type != ''">
+            and c.type = #{type}
+        </if>
+        <if test="title != null and title != ''">
+            and c.title like concat('%',#{title},'%')
+        </if>
+        <if test="title != null and title != ''">
+            and c.plat_falg =#{platFalg}
+        </if>
+        GROUP BY c.id
+        ORDER BY c.createtime DESC
+    </select>
+</mapper>

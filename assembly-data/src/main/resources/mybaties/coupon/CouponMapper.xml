@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bainuo.assembly.data.dao.coupon.CouponMapper">
+    <resultMap id="BaseResultMap" type="cn.bainuo.assembly.data.vo.coupon.Coupons">
+        <id column="id" jdbcType="CHAR" property="id" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="Money" jdbcType="DOUBLE" property="money" />
+        <result column="NeedMoney" jdbcType="DOUBLE" property="needmoney" />
+        <result column="DaysType" jdbcType="INTEGER" property="daystype" />
+        <result column="Days" jdbcType="VARCHAR" property="days" />
+        <result column="startline" jdbcType="INTEGER" property="startline" />
+        <result column="class_type" jdbcType="INTEGER" property="classType" />
+        <result column="connected_id" jdbcType="VARCHAR" property="connectedId" />
+        <result column="connected_content" jdbcType="VARCHAR" property="connectedContent" />
+        <result column="user_type" jdbcType="TINYINT" property="userType" />
+        <result column="isvalid" jdbcType="BIT" property="isvalid" />
+        <result column="createtime" jdbcType="INTEGER" property="createtime" />
+        <result column="CanGetNum" jdbcType="INTEGER" property="cangetnum" />
+        <result column="is_initiative" jdbcType="INTEGER" property="isInitiative" />
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.bainuo.assembly.data.vo.coupon.Coupons">
+        <result column="instruction" jdbcType="LONGVARCHAR" property="instruction" />
+        <result column="plat_falg" jdbcType="INTEGER" property="platFalg" />
+        <result column="limit_num" jdbcType="INTEGER" property="limitNum" />
+    </resultMap>
+
+
+    <sql id="baseSql">
+         id,
+        title,
+        NeedMoney AS needMoney
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, title, type, status, Money, NeedMoney, DaysType, Days, startline, class_type,
+        connected_id, connected_content, user_type, isvalid, createtime, CanGetNum, is_initiative
+    </sql>
+    <sql id="Blob_Column_List">
+        instruction,
+        plat_falg,
+        limit_num
+    </sql>
+
+
+    <select id="selectCouponById" resultMap="ResultMapWithBLOBs">
+            SELECT
+                <include refid="Base_Column_List" />
+                ,
+                <include refid="Blob_Column_List" />
+            FROM
+                coupons
+            WHERE id = #{id}
+    </select>
+    
+    <select id="selectCouponByUserId" resultType="cn.bainuo.assembly.data.vo.coupon.CouponUser">
+            SELECT
+                cu.id,
+        cu.user_id,cu.Money,cu.deadline,cu.isvalid,cu.createtime,cu.is_used
+            FROM
+                coupon_users AS cu
+            WHERE
+                cu.user_id = #{id}
+    </select>
+
+
+
+    <select id="selectCouponByCouponUserId" resultType="cn.bainuo.assembly.data.vo.coupon.CouponVo">
+        SELECT
+        c.id,
+        c.title,
+        c.NeedMoney AS needMoney
+        FROM
+        coupon_users AS cu,
+        coupons AS c
+        WHERE
+        c.id = cu.coupon_id
+        AND cu.user_id = #{userId}
+    </select>
+    
+    <select id="selectCouponPage" parameterType="cn.bainuo.plugin.ParameterMap"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from coupons
+        <where>
+            and isvalid=true
+            <if test="type!=null and type!=''">
+                and  type=#{type}
+            </if>
+            <if test="title!=null and title!=''">
+                and  title like concat('%',#{title},'%')
+            </if>
+            <if test="platFalg != null and platFalg !=''">
+                and plat_falg = #{platFalg}
+            </if>
+            <if test="ids != null and ids != ''">
+                AND  id 
+                <foreach collection = "ids" item = "id" open = "IN (" close=")" separator = ",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by createtime desc
+    </select>
+
+    <select id="selectCouponsByIds" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from coupons
+        <where>
+            and isvalid = true  AND  id
+            <foreach collection = "ids" item = "id" open = "IN (" close=")" separator = ",">
+                #{id}
+            </foreach>
+        </where>
+        order by createtime desc
+    </select>
+
+    <update id="updataStatus">
+      UPDATE coupon_users SET is_used = #{status} WHERE
+        user_id = #{userId}
+        AND  id
+      <foreach collection="ids" item="id" separator="," open="IN (" close=")">
+        #{id}
+      </foreach>
+    </update>
+    <update id="updateCouponUser">
+        UPDATE coupon_users SET isvalid = ０ WHERE id　＝　#{id}
+    </update>
+    
+    <update id="delete">
+        UPDATE coupons SET isvalid = 0 WHERE id
+        <foreach collection="couponIds" item="couponId" separator="," open="IN (" close=")">
+            #{couponId}
+        </foreach>
+    </update>
+    
+    <insert id="insertCoupon" parameterType="cn.bainuo.plugin.ParameterMap"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO coupons
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="title != null and title != ''">
+                title,
+            </if>
+            <if test="status != null and status != ''">
+                status,
+            </if>
+            <if test="type != null and type != ''">
+                type,
+            </if>
+            <if test="isOpen != null and isOpen != ''">
+                is_open,
+            </if>
+            <if test="needmoney != null and needmoney != ''">
+                NeedMoney,
+            </if>
+            <if test="canGetNum != null and canGetNum != ''">
+                CanGetNum,
+            </if>
+            <if test="days != null and days != ''">
+                Days,
+            </if>
+            <if test="isvalid != null and isvalid != ''">
+                isvalid,
+            </if>
+            <if test="createtime != null and createtime != ''">
+                createtime,
+            </if>
+            <if test="daystype != null and daystype != ''">
+                DaysType,
+            </if>
+            <if test="instruction != null and instruction != ''">
+                instruction,
+            </if>
+            <if test="classType != null and classType != ''">
+                class_type,
+            </if>
+            <if test="connectedId != null and connectedId != ''">
+                connected_id,
+            </if>
+            <if test="connectedContent != null and connectedContent != ''">
+                connected_content,
+            </if>
+            <if test="money != null and money != ''">
+                Money,
+            </if>
+            <if test="startline != null and startline != ''">
+                startline,
+            </if>
+            <if test="isInitiative != null and isInitiative != ''">
+                is_initiative,
+            </if>
+            <if test="platFalg != null and platFalg != ''">
+                plat_falg,
+            </if>
+            <if test="limitNum != null and limitNum != ''">
+                limit_num,
+            </if>
+            <if test="userType != null and userType != ''">
+                user_type,
+            </if>
+        </trim>
+            VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="title != null and title != ''">
+                #{title},
+            </if>
+            <if test="status != null and status != ''">
+                #{status},
+            </if>
+            <if test="type != null and type != ''">
+                #{type},
+            </if>
+            <if test="isOpen != null and isOpen != ''">
+                #{isOpen},
+            </if>
+            <if test="needmoney != null and needmoney != ''">
+                #{needmoney},
+            </if>
+            <if test="canGetNum != null and canGetNum != ''">
+                #{canGetNum},
+            </if>
+            <if test="days != null and days != ''">
+                #{days},
+            </if>
+            <if test="isvalid != null and isvalid != ''">
+                #{isvalid},
+            </if>
+            <if test="createtime != null and createtime != ''">
+                #{createtime},
+            </if>
+            <if test="daystype != null and daystype != ''">
+                #{daystype},
+            </if>
+            <if test="instruction != null and instruction != ''">
+                #{instruction},
+            </if>
+            <if test="classType != null and classType != ''">
+                #{classType},
+            </if>
+            <if test="connectedId != null and connectedId != ''">
+                #{connectedId},
+            </if>
+            <if test="connectedContent != null and connectedContent != ''">
+                #{connectedContent},
+            </if>
+            <if test="money != null and money != ''">
+                #{money},
+            </if>
+            <if test="startline != null and startline != ''">
+                #{startline},
+            </if>
+            <if test="isInitiative != null and isInitiative != ''">
+                #{isInitiative},
+            </if>
+            <if test="platFalg != null and platFalg != ''">
+                #{platFalg},
+            </if>
+            <if test="limitNum != null and limitNum != ''">
+                #{limitNum},
+            </if>
+            <if test="userType != null and userType != ''">
+                #{userType},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateCoupon" parameterType="cn.bainuo.plugin.ParameterMap">
+        UPDATE `coupons`
+        <set>
+            <if test=" title != null and title != ''">
+            `title` = #{title},
+            </if>
+            <if test="type != null and type != ''">
+              type = #{type},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test=" isOpen != null and isOpen != ''">
+            `is_open` = #{isOpen},
+            </if>
+            <if test=" needmoney != null and needmoney != ''">
+                `NeedMoney` = #{needmoney},
+            </if>
+            <if test=" canGetNum != null and canGetNum != ''">
+                `CanGetNum` = #{canGetNum},
+            </if>
+            <if test=" days != null and days != ''">
+                `Days` = #{days},
+            </if>
+            <if test="isvalid != null and isvalid != ''">
+                `isvalid` = #{isvalid},
+            </if>
+            <if test=" createtime != null and createtime != ''">
+                `createtime` = #{createtime},
+            </if>
+            <if test=" daystype != null and daystype != ''">
+                `DaysType` = #{daystype},
+            </if>
+            <if test=" instruction != null and instruction != ''">
+                `instruction` = #{instruction},
+            </if>
+            <if test=" classType != null and classType != ''">
+                `class_type` = #{classType},
+            </if>
+            <if test=" connectedId != null and connectedId != ''">
+                `connected_id` = #{connectedId},
+            </if>
+            <if test=" money != null and money != ''">
+                `Money` = #{money},
+            </if>
+            <if test=" startline != null and startline != ''">
+                `startline` = #{startline},
+            </if>
+            <if test=" isInitiative != null and isInitiative != ''">
+                `is_initiative` = #{isInitiative},
+            </if>
+            <if test="platFalg != null and platFalg != ''">
+                plat_falg = #{platFalg},
+            </if>
+            <if test="limitNum != null and limitNum != ''">
+                limit_num = #{limitNum},
+            </if>
+            <if test="userType != null and userType != ''">
+                user_type = #{userType},
+            </if>
+        </set>
+        WHERE
+            id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    
+    <insert id="bindGiftPack" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `bainuo_coupon`.`package_coupon_relationship` (
+            `package_id`,
+            `createtime`,
+            `group_id`
+        )
+        VALUES
+            (#{packId}, #{createtime}, #{groupId})
+    </insert>
+    
+    
+    <insert id="insertUserStamp" >
+        INSERT INTO `coupon_users`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+              <if test=" id != null and id != ''">
+                `id`,
+              </if>
+            <if test=" userId != null and userId != ''">
+                `user_id`,
+            </if>
+            <if test="money != null and money != ''">
+                `Money`,
+            </if>
+            <if test=" deadline != null and deadline != ''">
+                `deadline`,
+            </if>
+            <if test=" isvalid != null and isvalid != ''">
+                `isvalid`,
+            </if>
+            <if test=" createtime != null and createtime != ''">
+                `createtime`,
+            </if>
+            <if test=" needMoney!= null and needMoney != ''">
+                `NeedMoney`,
+            </if>
+            <if test=" isUsed != null and isUsed != ''">
+                `is_used`,
+            </if>
+            <if test=" classType!= null and classType != ''">
+                `class_type`,
+            </if>
+            <if test=" couponId != null and couponId != ''">
+                `coupon_id`,
+            </if>
+            <if test=" connectedId != null and connectedId != ''">
+                `connected_id`,
+            </if>
+            <if test=" startline != null and startline != ''">
+                `startline`,
+            </if>
+            <if test="platFalg != null and platFalg != ''">
+                `plat_falg`,
+            </if>
+            <if test="limitNum != null and limitNum != ''">
+                `limit_num`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test=" id != null and id != ''">
+                #{id},
+            </if>
+            <if test=" userId != null and userId != ''">
+                #{userId},
+            </if>
+            <if test=" money != null and money != ''">
+                #{money},
+            </if>
+            <if test=" deadline != null and deadline != ''">
+                #{deadline},
+            </if>
+            <if test=" isvalid != null and isvalid != ''">
+                #{isvalid},
+            </if>
+            <if test=" createtime != null and createtime != ''">
+                #{createtime},
+            </if>
+            <if test=" needMoney != null and needMoney != ''">
+                #{needMoney},
+            </if>
+            <if test=" isUsed != null and isUsed != ''">
+                #{isUsed},
+            </if>
+            <if test=" classType != null and classType != ''">
+                #{classType},
+            </if>
+            <if test=" couponId != null and couponId != ''">
+                #{couponId},
+            </if>
+            <if test=" connectedId != null and connectedId != ''">
+                #{connectedId},
+            </if>
+            <if test=" startline != null and startline != ''">
+                #{startline},
+            </if>
+            <if test="platFalg != null and platFalg != ''">
+                #{platFalg},
+            </if>
+            <if test="limitNum != null and limitNum != ''">
+                #{limitNum},
+            </if>
+        </trim>
+    </insert>
+    
+    
+    <insert id="insertUserCoupon" parameterType="cn.bainuo.assembly.data.vo.coupon.CouponUser" >
+        INSERT INTO `coupon_users`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+            `id`,
+            </if>
+            <if test="userId != null and userId != ''">
+            `user_id`,
+            </if>
+            <if test=" money != null and money != ''">
+            `Money`,
+            </if>
+            <if test="days != null and days != ''">
+            `deadline`,
+            </if>
+            <if test="createtime != null  and createtime != ''">
+            `createtime`,
+            </if>
+            <if test="needmoney != null and needmoney != ''">
+            `NeedMoney`,
+            </if>
+            <if test="classType != null and classType != ''">
+            `class_type`,
+            </if>
+            <if test="couponId != null and couponId != ''">
+            `coupon_id`,
+            </if>
+            <if test="connectedId != null and connectedId != ''">
+            `connected_id`,
+            </if>
+            <if test="startline != null and startline != ''">
+            `startline`,
+            </if>
+            <if test="source != null and source != ''">
+            `source`,
+            </if>
+            <if test="giveFlag != null  and giveFlag != ''">
+            `give_flag`
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="userId != null and userId != ''">
+                #{userId},
+            </if>
+            <if test=" money != null and money != ''">
+                #{money},
+            </if>
+            <if test="days != null and days != ''">
+                #{days},
+            </if>
+            <if test="createtime != null  and createtime != ''">
+                #{createtime},
+            </if>
+            <if test="needMoney != null and needMoney != ''">
+                #{needmoney},
+            </if>
+            <if test="classType != null and classType != ''">
+                #{classType},
+            </if>
+            <if test="couponId != null and couponId != ''">
+                #{couponId},
+            </if>
+            <if test="connectedId != null and connectedId != ''">
+                #{connectedId},
+            </if>
+            <if test="startline != null and startline != ''">
+                #{startline},
+            </if>
+            <if test="source != null and source != ''">
+                #{source},
+            </if>
+            <if test="giveFlag != null  and giveFlag != ''">
+                #{giveFlag}
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="deleteUserCoupon">
+        UPDATE `coupon_users`
+        SET
+         `isvalid` = 0
+        WHERE
+        `user_id` = #{userId}
+        AND
+        coupon_id
+        <foreach collection="ids" item="id" open="IN(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </update>
+
+
+    <select id="getIsUsIngByUserId" resultType="cn.bainuo.assembly.data.vo.coupon.UserCoupon">
+        SELECT
+        c.id AS couponsId,
+        c.Days AS days,
+        c.is_initiative AS isInitiative,
+        c.title,
+        c.status,
+        c.type,
+        c.DaysType AS daysType,
+        c.user_type AS userType,
+        c.instruction,
+        c.createtime,
+        c.limit_num,
+        cu.id AS couponUsersId,
+        cu.user_id AS userId,
+        cu.deadline,
+        cu.class_type AS classType,
+        cu.connected_id AS connectedId,
+        cu.Money AS money,
+        cu.NeedMoney AS needMoney,
+        cu.startline,
+        cu.isvalid,
+        cu.is_used AS isUsed,
+        cu.coupon_id AS couponId
+        FROM
+        coupons AS c
+        INNER JOIN coupon_users AS cu ON cu.coupon_id = c.id
+        WHERE
+        cu.isvalid = 1 AND  cu.is_used = 0 AND c.plat_falg = #{platFalg}
+        AND unix_timestamp(now()) <![CDATA[ <=]]> cu.deadline
+        AND cu.user_id =#{userId}
+        <if test="userType != null and  ( userType=='1' or userType==1 )">
+            AND cu.is_used = 0
+        </if>
+    </select>
+
+    <select id="selectUserCouponCount" resultType="int">
+        SELECT count(cu.id) FROM coupon_users as cu
+        WHERE cu.coupon_id = #{couponId} AND cu.user_id = #{userId}
+    </select>
+    
+    <select id="selectUserCouponPage" resultType="cn.bainuo.assembly.data.vo.coupon.UserCoupon"
+            parameterType="cn.bainuo.plugin.ParameterMap">
+       SELECT
+        c.id AS couponsId,
+        c.id AS couponId,
+        c.is_initiative AS isInitiative,
+        c.title,
+        c.status,
+        c.type,
+        c.DaysType AS daysType,
+        c.user_type AS userType,
+        c.createtime,
+        c.limit_num,
+        c.Days AS days,
+        c.instruction,
+        cu.id AS couponUsersId,
+        cu.user_id AS userId,
+        cu.deadline,
+        c.class_type AS classType,
+        c.connected_id AS connectedId,
+        c.Money AS money,
+        c.NeedMoney AS needMoney,
+        c.startline,
+        c.isvalid,
+        cu.is_used AS isUsed
+        FROM
+        coupons AS c
+        LEFT JOIN coupon_users AS cu ON cu.coupon_id = c.id   AND cu.user_id = #{userId}
+        WHERE
+        c.plat_falg = #{platFalg}
+        <if test="title != null and title != '' ">
+            and c.title LIKE concat('%','${title}','%')
+        </if>
+        order by c.createtime desc
+    </select>
+    
+    
+    <insert id="saveBatchUserCoupons">
+        INSERT INTO `coupon_users` (
+            `id`,
+            `user_id`,
+            `Money`,
+            `deadline`,
+            `createtime`,
+            `NeedMoney`,
+            `is_used`,
+            `class_type`,
+            `coupon_id`,
+            `connected_id`,
+            `startline`,
+            `source`,
+            `give_flag`
+        )
+        VALUES
+        <foreach collection="userCoupons" item="userCoupon" separator=",">
+            (
+                #{userCoupon.id},#{userCoupon.userId},#{userCoupon.money},#{userCoupon.deadline},
+                #{userCoupon.createtime},#{userCoupon.needMoney},#{userCoupon.isUsed},
+                #{userCoupon.classType},#{userCoupon.couponId},#{userCoupon.connectedId},#{userCoupon.startline},
+                #{userCoupon.source},#{userCoupon.giveFlag}
+            )
+        </foreach>
+    </insert>
+</mapper>

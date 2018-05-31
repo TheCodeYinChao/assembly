@@ -1,0 +1,9 @@
+server:
+  port: 8040
+spring:
+  application:
+    name: assembly-gateway
+eureka:
+  client:
+    serviceUrl:
+            defaultZone: http://user:123456@172.17.207.24:8761/eureka

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bainuo.assembly.timer.dao.coupon.CouponMapper">
+    <resultMap id="BaseResultMap" type="com.bainuo.assembly.timer.vo.Coupons">
+        <id column="id" jdbcType="CHAR" property="id" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="Money" jdbcType="DOUBLE" property="money" />
+        <result column="NeedMoney" jdbcType="DOUBLE" property="needmoney" />
+        <result column="DaysType" jdbcType="INTEGER" property="daystype" />
+        <result column="Days" jdbcType="VARCHAR" property="days" />
+        <result column="startline" jdbcType="INTEGER" property="startline" />
+        <result column="class_type" jdbcType="INTEGER" property="classType" />
+        <result column="connected_id" jdbcType="VARCHAR" property="connectedId" />
+        <result column="connected_content" jdbcType="VARCHAR" property="connectedContent" />
+        <result column="user_type" jdbcType="TINYINT" property="userType" />
+        <result column="isvalid" jdbcType="BIT" property="isvalid" />
+        <result column="createtime" jdbcType="INTEGER" property="createtime" />
+        <result column="CanGetNum" jdbcType="INTEGER" property="cangetnum" />
+        <result column="is_initiative" jdbcType="INTEGER" property="isInitiative" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, title, type, status, Money, NeedMoney, DaysType, Days, startline, class_type,
+    connected_id, connected_content, user_type, isvalid, createtime, CanGetNum, is_initiative
+  </sql>
+
+    <select id="selectByStatus" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM coupons WHERE status != 3
+    </select>
+
+    <update id="updateStatus">
+        UPDATE `coupons`
+        SET
+        `status` = '3'
+        WHERE
+        id
+        <foreach collection="couponIds" item="id" separator="," open="IN (" close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
