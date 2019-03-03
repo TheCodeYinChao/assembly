@@ -1,4 +1,3 @@
-/*
 package cn.bainuo.util;
 
 import org.apache.http.Consts;
@@ -21,12 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-*/
-/**
+/*
  * RestTemplate 初始配置类
- *
  * @author DHC
- *//*
+ */
+
 
 public class RestTemplateClient {
 
@@ -85,4 +83,3 @@ public class RestTemplateClient {
         return restTemplate;
     }
 }
-*/
