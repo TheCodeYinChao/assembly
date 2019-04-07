@@ -1,6 +1,7 @@
 package cn.bainuo.controller;
 
 import cn.bainuo.plugin.ParameterMap;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,22 @@ public class BaseController {
         return parameterMap;
     }
 
+    /**
+     * 前置log
+     * @param des
+     * @param args
+     */
+    public void logPre(String des,Object...args){
+        log.info("start log {} , {}",des, JSON.toJSONString(args));
+    }
 
-
+    /**
+     * 后置log
+     * @param des
+     * @param result
+     */
+    public void logSuf(String des,Object result){
+        log.info("end log {} , {}",des, JSON.toJSONString(result));
+    }
 
 }
