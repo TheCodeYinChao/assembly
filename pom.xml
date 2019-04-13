@@ -18,6 +18,7 @@
     <module>assembly-data</module>
     <module>assembly-timer</module>
     <module>assembly-gateway</module>
+    <module>assembly-nio</module>
   </modules>
 
   <properties>
@@ -34,6 +35,11 @@
     <java_source_version>1.8</java_source_version>
     <java_target_version>1.8</java_target_version>
     <file_encoding>UTF-8</file_encoding>
+    <netty-all>5.0.0.Alpha1</netty-all>
+    <jboss-marshalling>1.4.10.Final</jboss-marshalling>
+    <jboss-marshalling-serial>1.4.10.Final</jboss-marshalling-serial>
+
+    <assembly-common>1.0-SNAPSHOT</assembly-common>
   </properties>
 
   <parent>
@@ -44,6 +50,11 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <artifactId>assembly-common</artifactId>
+        <groupId>cn.bainuo</groupId>
+        <version>${assembly-common}</version>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -80,6 +91,24 @@
         <groupId>com.alibaba</groupId>
         <artifactId>fastjson</artifactId>
         <version>${fastjson.version}</version>
+      </dependency>
+
+      <!--netty包-->
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>${netty-all}</version>
+      </dependency>
+      <!--序列化包-->
+      <dependency>
+        <groupId>org.jboss.marshalling</groupId>
+        <artifactId>jboss-marshalling</artifactId>
+        <version>${jboss-marshalling}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.marshalling</groupId>
+        <artifactId>jboss-marshalling-serial</artifactId>
+        <version>${jboss-marshalling-serial}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
