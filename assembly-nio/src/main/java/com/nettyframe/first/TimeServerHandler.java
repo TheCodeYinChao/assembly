@@ -33,4 +33,10 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
     }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        log.info(" persion ");
+        super.userEventTriggered(ctx, evt);
+    }
 }
