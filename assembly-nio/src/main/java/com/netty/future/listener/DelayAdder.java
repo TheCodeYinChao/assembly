@@ -9,7 +9,9 @@ public class DelayAdder {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        new DelayAdder().add(10 * 1000, 1, 2).addListener(new IFutureListener() {
+        DelayAdditionFuture future = new DelayAdder().add(10 * 1000, 1, 2);
+
+        future.addListener(new IFutureListener() {
 
             @Override
             public void operationComplete(IFuture future) throws Exception {
