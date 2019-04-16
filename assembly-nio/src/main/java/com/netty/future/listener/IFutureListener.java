@@ -1,7 +1,14 @@
 package com.netty.future.listener;
 
 /**
- * Created by Admin on 2019/4/15.
+ * Created by jiangwenping on 16/12/27.
  */
-public class IFutureListener<T> {
+public interface IFutureListener<V extends IFuture<?>>{
+
+    /**
+     *  完成
+     * @param future
+     * @throws Exception
+     */
+    void operationComplete(IFuture<V> future) throws Exception;
 }

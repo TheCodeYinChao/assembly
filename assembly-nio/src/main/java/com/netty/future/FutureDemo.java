@@ -1,27 +1,28 @@
 package com.netty.future;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.*;
 
 /**
- * Created by Admin on 2019/4/15.
+ * jdk 内置future实现
  */
+@Slf4j
 public class FutureDemo {
-    public static void main(String[] args)throws Exception {
+
+    public static void main(String[] args) throws Exception{
         ExecutorService es = Executors.newFixedThreadPool(1);
-
-        Future<Long> future = es.submit(new FutureDemo().new Task());
-
-        System.out.println(future.get());
+        Future<Long> future = es.submit(new FutureDemo().new T());
+        log.info( "异步结果获取：{}",future.get());
     }
 
 
-    public class Task implements Callable<Long>{
+
+    public class T implements Callable<Long> {
         @Override
         public Long call() throws Exception {
-            return 123l;
+            Thread.sleep(2000);
+            return 0l;
         }
     }
 }

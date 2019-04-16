@@ -1,13 +1,13 @@
 package com.netty.future.listener;
 
-import java.util.concurrent.CancellationException;
-
-/**
- * Created by Admin on 2019/4/15.
- */
 public class CauseHolder {
-    public Object cause;
+    public Throwable cause;
 
-    public CauseHolder(CancellationException e) {
+    public CauseHolder(Throwable cause) {
+        this.cause = cause;
+    }
+
+    public CauseHolder() {
+
     }
 }
