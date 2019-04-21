@@ -13,6 +13,8 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Admin on 2019/4/9.
  */
@@ -25,6 +27,7 @@ public class NettyServer {
             b.group(e,worker)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG,100)
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,10000)//io超时
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -39,6 +42,7 @@ public class NettyServer {
 
             ChannelFuture future = b.bind(83).sync();
 //            future.channel().closeFuture().sync();
+            future.awaitUninterruptibly(10, TimeUnit.MINUTES);
             log.info("server init success！");
     }
 
