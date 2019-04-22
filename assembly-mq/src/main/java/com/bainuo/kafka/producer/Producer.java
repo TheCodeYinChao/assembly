@@ -1,4 +1,4 @@
-package com.bainuo.runtest;
+package com.bainuo.kafka.producer;
 
 import com.alibaba.fastjson.JSON;
 import com.bainuo.kafka.producer.KafkaProducer;

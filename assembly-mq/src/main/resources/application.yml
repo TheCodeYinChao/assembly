@@ -29,3 +29,15 @@ spring:
 topicName:
   topic2: topic2Name
   topic5: topic5Name
+
+
+
+
+
+#-----------------------------------------------
+
+  rabbitmq:
+    host: 192.168.0.86
+    port: 5672
+    username: admin
+    password: 123456

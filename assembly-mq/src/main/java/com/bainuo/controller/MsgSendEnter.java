@@ -1,7 +1,7 @@
 package com.bainuo.controller;
 
 import com.bainuo.kafka.KafkaSender;
-import com.bainuo.runtest.Producer;
+import com.bainuo.kafka.producer.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
