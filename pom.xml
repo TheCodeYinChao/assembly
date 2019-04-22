@@ -19,6 +19,7 @@
     <module>assembly-timer</module>
     <module>assembly-gateway</module>
     <module>assembly-nio</module>
+    <module>assembly-mq</module>
   </modules>
 
   <properties>
