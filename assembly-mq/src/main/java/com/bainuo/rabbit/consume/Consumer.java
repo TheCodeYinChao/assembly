@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 @Component
 //@RabbitListener(queues = "${}")
 @Slf4j
@@ -25,7 +27,7 @@ public class Consumer {
     }
 
 
-    @Autowired
+    @Resource(name = "connectionFactory")
     ConnectionFactory connectionFactory;
     @Autowired
     RabbitContainerFactory rabbitContainerFactory;
