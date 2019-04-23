@@ -3,6 +3,7 @@ package com.bainuo.rabbit.factory;
 import com.bainuo.rabbit.listenter.RabbitListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AcknowledgeMode;
+import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -10,15 +11,22 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Slf4j
 @Component
 public class RabbitContainerFactory {
 
+
+    private static final String XMS_Q_BILLCHARGE ="" ;
+    private static final String XMS_X_BILLCHARGE ="" ;
 
     /**
      *Rabbitmq connectionFactory 自定义
@@ -73,5 +81,46 @@ public class RabbitContainerFactory {
         container.setPrefetchCount(1); // 设置每次分配消息数最大值
         container.setMessageListener(rabbitListener);
         return container;
+    }
+
+
+    /**
+     * 下面为手动用法demo 绑定exchange
+     */
+
+
+    @Autowired
+    @Qualifier("xmsFactory")
+    private ConnectionFactory connectionFactory;
+
+    @Bean
+    public String  chargeExchange(){
+        try {
+            connectionFactory.createConnection().createChannel(false).exchangeDeclare(XMS_X_BILLCHARGE,ExchangeTypes.DIRECT, true);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    @Bean
+    public String bindChargeQueue(){
+        try {
+            connectionFactory.createConnection().createChannel(false).queueBind(XMS_Q_BILLCHARGE,"","");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @Bean
+    public String chargeQueue() {
+        try {
+            connectionFactory.createConnection().createChannel(false).queueDeclare("", false, false, false, null);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return "";
     }
 }
