@@ -8,16 +8,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class CacheService {
 
-    public CacheContext operCache(String dataSource){
+    public CacheContext operCache(CacheEnum cacheEnum){
         CacheContext c = null;
-        switch (dataSource){
-            case Constant.MOGON:
+        switch (cacheEnum){
+            case mongo:
                 c = new CacheContext(new MongoClient());
                 break;
-            case  Constant.REDIS:
+            case redis:
                 c = new CacheContext(new RedisClient());
                 break;
         }
         return c;
+    }
+
+    public void t(){
+        this.operCache(CacheEnum.mongo);
     }
 }

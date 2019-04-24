@@ -20,6 +20,7 @@
     <module>assembly-gateway</module>
     <module>assembly-nio</module>
     <module>assembly-mq</module>
+    <module>assembly-nosql</module>
   </modules>
 
   <properties>
