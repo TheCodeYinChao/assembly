@@ -20,7 +20,8 @@
         <prudent>true</prudent>
         <encoder>
             <pattern>
-                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n
+                %d{yyyy-MM-dd HH:mm:ss.SSS}  [%X{sessionId}] -%5p ${PID:-} [%15.15t] %-40.40logger{39} : %m%n
+                <!--%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n-->
             </pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -42,7 +43,10 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS}  [%X{sessionId}] -%5p ${PID:-} [%15.15t] %-40.40logger{39} : %m%n
+               <!-- %d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n-->
+            </pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOGPATH}${file.separator}all${file.separator}%d{yyyy-MM-dd}-error.log</fileNamePattern>
