@@ -3,6 +3,7 @@ package com.cache.controller;
 import cn.bainuo.controller.BaseController;
 import com.cache.context.cache.CacheContext;
 import com.cache.redis.opea.RedisOpera;
+import com.cache.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/cache")
+@Slf4j
 public class CacheController extends BaseController{
     @Autowired
     private RedisOpera opera;
+    @Autowired
+    private LogService logService;
 
     @RequestMapping("/oper")
     public Object cache(@RequestParam String oper,@RequestParam String dataSource){
@@ -34,5 +38,13 @@ public class CacheController extends BaseController{
     public String getVal(@PathVariable String key){
         return opera.getVal(key);
     }
+
+
+    @GetMapping("/logDemo")
+    public void logDemo(){
+        log.info("链路追钟");
+        logService.seachLog();
+    }
+
 
 }
