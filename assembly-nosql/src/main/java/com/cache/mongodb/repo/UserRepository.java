@@ -3,7 +3,9 @@ package com.cache.mongodb.repo;
 import com.cache.mongodb.model.User;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -20,6 +22,8 @@ public class UserRepository {
      */
     public void saveUser(User user,String collectName) {
         mongoTemplate.save(user,collectName);
+        /*默认走后台创建索引*/
+        mongoTemplate.indexOps(collectName).ensureIndex(new Index().on("userName",Sort.Direction.ASC));
     }
 
     /**
