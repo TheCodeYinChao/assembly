@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.bainuo.exception.GlobalExceptionHandler
+#这里将公共部分纳入到项目spring注入里，多个,号隔开
