@@ -5,6 +5,7 @@ package com.reactor;
  */
 public enum EventType {
     ACCEPT,
+    CLOSE,
     READ,
     WRITE;
 }
