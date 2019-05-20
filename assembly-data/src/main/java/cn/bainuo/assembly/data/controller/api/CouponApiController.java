@@ -3,6 +3,7 @@ package cn.bainuo.assembly.data.controller.api;
 import cn.bainuo.assembly.data.service.coupon.CouponService;
 import cn.bainuo.controller.BaseController;
 import cn.bainuo.plugin.ParameterMap;
+import cn.bainuo.util.JacksonUtil;
 import cn.bainuo.vo.ResultVo;
 import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
@@ -65,11 +66,19 @@ public class CouponApiController  extends BaseController {
     @ApiOperation(value = "根据平台id 获取 coupons")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "platFalg", value = "platFalg", required = true, dataType = "Integer")
-          })
+    })
     public  Object couponsByPlatFalg(@RequestParam(required = false) Integer platFalg){
         ParameterMap pm = new ParameterMap();
         pm.put("platFalg",platFalg);
         return ResultVo.ok(couponService.selectCoupons(pm));
+    }
+
+
+    @RequestMapping("/cuponsByParam")
+    public Object cuponsByParam(@RequestBody String param) throws Exception {
+        ResultVo rv = JacksonUtil.toObj(param, ResultVo.class);
+        String code = rv.getCode();
+        return code;
     }
 
 }
