@@ -3,10 +3,10 @@ package com.reactor;
 /**
  * Created by Admin on 2019/5/19.
  */
-public class AcceptEventHandler extends EventHandler {
+public class EventAcceptHandler extends EventHandler {
     private Selector selector;
 
-    public AcceptEventHandler(Selector selector) {
+    public EventAcceptHandler(Selector selector) {
         this.selector = selector;
     }
 

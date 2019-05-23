@@ -5,8 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @SpringBootApplication
 @EnableEurekaServer
@@ -17,7 +19,7 @@ public class ServiceManagerApplication {
 	}
 
 	@GetMapping("/test")
-	public String getTest(HttpServletRequest request){
+	public String getTest(HttpServletRequest request, HttpServletResponse response){
 
 		String method = request.getMethod();
 		System.out.println(method);

@@ -13,7 +13,7 @@ public class Server {
     }
 
     public void start() {
-        eventLooper.registEventHandler(EventType.ACCEPT, new AcceptEventHandler(selector));
+        eventLooper.registEventHandler(EventType.ACCEPT, new EventAcceptHandler(selector));
         new Thread(acceptor, "Acceptor-" + acceptor.getPort()).start();
         eventLooper.handleEvents();
     }
