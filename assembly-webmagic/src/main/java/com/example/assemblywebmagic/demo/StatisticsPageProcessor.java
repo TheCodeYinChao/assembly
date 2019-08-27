@@ -193,7 +193,7 @@ public class StatisticsPageProcessor implements PageProcessor {
         //当所有任务执行完毕
         //INSERT INTO `wool_trade`.`bus_region` (`id`, `name`, `p_id`) VALUES ('1', '北京市', '0');
 
-        String sql = "INSERT INTO `test`.`bus_region` (`id`, `p_id`, `name`, `level`, `sort`, `code`, `longcode`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `test`.`region` (`id`, `pid`, `name`, `level`, `sort`, `code`, `longcode`) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement;
         try {
             for(TargetModel province : provinces){
