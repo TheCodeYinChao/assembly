@@ -1,0 +1,43 @@
+#MySQL
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/oauth?characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 123456
+
+  application:
+    name: assembly-oauth2
+#Spring Data JPA
+  jpa:
+    database: MYSQL
+    show-sql: true
+    ddl-auto: create
+# Naming strategy
+    hibernate:
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+# stripped before adding them to the entity manager)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+eureka:
+  client:
+    healthcheck:
+        enabled: true
+    serviceUrl:
+        defaultZone: http://user:123456@localhost:8761/eureka
+  instance:
+      prefer-ip-address: true
+#视图层控制
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+    static-path-pattern: /static/**
+
+#安全配置
+security:
+  #oauth2配置
+  oauth2:
+    resource:
+      filter-order: 3
