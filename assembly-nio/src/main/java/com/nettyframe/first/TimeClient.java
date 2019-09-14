@@ -15,9 +15,19 @@ import io.netty.handler.codec.FixedLengthFrameDecoder;
 /**
  * Created by Admin on 2019/4/9.
  */
-public class TimeClient {
+public class TimeClient extends Thread{
+    private String ip;
+    private Integer port;
 
     public TimeClient(String ip,int port) {
+        this.ip=ip;
+        this.port=port;
+
+    }
+
+
+    @Override
+    public void run() {
         EventLoopGroup e = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
@@ -39,6 +49,10 @@ public class TimeClient {
     }
 
     public static void main(String[] args) {
-        new TimeClient("127.0.0.1",82);
+        for(int i =1 ;i<650;i++){
+            new TimeClient("127.0.0.1",82).start();
+            System.out.println(i);
+        }
+
     }
 }
