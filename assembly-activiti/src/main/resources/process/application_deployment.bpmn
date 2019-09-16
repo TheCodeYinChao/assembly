@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1567405001666" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="application_deployment" isClosed="false" isExecutable="true" name="开发验收" processType="None">
+    <startEvent id="start" name="开始"/>
+    <userTask activiti:exclusive="true" id="devmanager_application_deployment" name="产品经理申请现场部署+上传采购清单"/>
+    <sequenceFlow id="_4" sourceRef="start" targetRef="devmanager_application_deployment"/>
+    <userTask activiti:exclusive="true" id="CEO_confirm" name="CEO确认部署"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="CEO_confirm_exclusive_gateway" name="是否确认"/>
+    <userTask activiti:exclusive="true" id="upload_express_bill" name="IT上传快递单"/>
+    <sequenceFlow id="_8" sourceRef="devmanager_application_deployment" targetRef="CEO_confirm"/>
+    <sequenceFlow id="_9" sourceRef="CEO_confirm" targetRef="CEO_confirm_exclusive_gateway"/>
+    <sequenceFlow id="_10" name="确认部署" sourceRef="CEO_confirm_exclusive_gateway" targetRef="upload_express_bill">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${confirm == "y" || confirm == "Y"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_11" name="有问题，通知产品经理重新申请" sourceRef="CEO_confirm_exclusive_gateway" targetRef="devmanager_application_deployment">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${confirm == "n" || confirm == "N"}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:exclusive="true" id="product_manager_confirms_deployment_completion" name="产品经理确认部署完成"/>
+    <userTask activiti:exclusive="true" id="debug" name="产品经理现场调试"/>
+    <endEvent id="end" name="结束"/>
+    <sequenceFlow id="_15" sourceRef="upload_express_bill" targetRef="product_manager_confirms_deployment_completion"/>
+    <sequenceFlow id="_16" sourceRef="product_manager_confirms_deployment_completion" targetRef="debug"/>
+    <sequenceFlow id="_17" sourceRef="debug" targetRef="end"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="application_deployment">
+      <bpmndi:BPMNShape bpmnElement="start" id="Shape-start">
+        <omgdc:Bounds height="32.0" width="32.0" x="355.0" y="25.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="devmanager_application_deployment" id="Shape-devmanager_application_deployment">
+        <omgdc:Bounds height="55.0" width="205.0" x="265.0" y="190.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="205.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="CEO_confirm" id="Shape-CEO_confirm">
+        <omgdc:Bounds height="55.0" width="140.0" x="300.0" y="340.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="140.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="CEO_confirm_exclusive_gateway" id="Shape-CEO_confirm_exclusive_gateway" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="355.0" y="480.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="upload_express_bill" id="Shape-upload_express_bill">
+        <omgdc:Bounds height="55.0" width="125.0" x="310.0" y="600.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="125.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="product_manager_confirms_deployment_completion" id="Shape-product_manager_confirms_deployment_completion">
+        <omgdc:Bounds height="55.0" width="125.0" x="310.0" y="755.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="125.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="debug" id="Shape-debug">
+        <omgdc:Bounds height="55.0" width="125.0" x="310.0" y="910.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="125.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="Shape-end">
+        <omgdc:Bounds height="32.0" width="32.0" x="575.0" y="920.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_15" id="BPMNEdge__15" sourceElement="upload_express_bill" targetElement="product_manager_confirms_deployment_completion">
+        <omgdi:waypoint x="372.5" y="655.0"/>
+        <omgdi:waypoint x="372.5" y="755.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17" id="BPMNEdge__17" sourceElement="debug" targetElement="end">
+        <omgdi:waypoint x="435.0" y="937.5"/>
+        <omgdi:waypoint x="575.0" y="936.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16" id="BPMNEdge__16" sourceElement="product_manager_confirms_deployment_completion" targetElement="debug">
+        <omgdi:waypoint x="372.5" y="810.0"/>
+        <omgdi:waypoint x="372.5" y="910.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4" id="BPMNEdge__4" sourceElement="start" targetElement="devmanager_application_deployment">
+        <omgdi:waypoint x="371.0" y="57.0"/>
+        <omgdi:waypoint x="371.0" y="190.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="devmanager_application_deployment" targetElement="CEO_confirm">
+        <omgdi:waypoint x="370.0" y="245.0"/>
+        <omgdi:waypoint x="370.0" y="340.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="CEO_confirm" targetElement="CEO_confirm_exclusive_gateway">
+        <omgdi:waypoint x="371.0" y="395.0"/>
+        <omgdi:waypoint x="371.0" y="480.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="CEO_confirm_exclusive_gateway" targetElement="devmanager_application_deployment">
+        <omgdi:waypoint x="355.0" y="496.0"/>
+        <omgdi:waypoint x="220.0" y="365.0"/>
+        <omgdi:waypoint x="265.0" y="217.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="CEO_confirm_exclusive_gateway" targetElement="upload_express_bill">
+        <omgdi:waypoint x="371.0" y="512.0"/>
+        <omgdi:waypoint x="371.0" y="600.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

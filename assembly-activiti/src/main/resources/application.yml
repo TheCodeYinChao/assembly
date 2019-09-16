@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: raydata-pm
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+    org.springframework.http.server.reactive: debug
+    org.springframework.http.web.reactive: debug
+    reactor.ipc.netty: debug
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.raydata.model
+  configLocation: classpath:mybaties-config.xml
+#  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  port: 8888
+
+
+pm:
+  default:
+    passwrod: Raydata666
