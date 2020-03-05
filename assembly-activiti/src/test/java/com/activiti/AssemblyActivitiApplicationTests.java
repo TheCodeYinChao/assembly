@@ -1,4 +1,4 @@
-package com.zyc.activiti.activiti;
+package com.activiti;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
