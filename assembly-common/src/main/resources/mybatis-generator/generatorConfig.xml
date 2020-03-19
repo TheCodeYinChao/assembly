@@ -32,18 +32,60 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table schema="test" tableName="industry" domainObjectName="Industry"
+        <!--<table schema="test" tableName="inner_msg" domainObjectName="InnerMsg"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false">-->
+        <!--&lt;!&ndash;<columnRenamingRule searchString="^D_" replaceString=""/> &ndash;&gt;-->
+        <!--</table>-->
+        <table schema="test" tableName="per_oper_log" domainObjectName="PerOperLog"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
         </table>
-        <table schema="test" tableName="region" domainObjectName="Region"
+        <table schema="test" tableName="per_permission" domainObjectName="PerPermission"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
         </table>
+        <table schema="test" tableName="per_role_permission" domainObjectName="PerRolePermission"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
+        </table>
+        <table schema="test" tableName="pm_dictionaries" domainObjectName="PmDictionaries"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
+        </table>
+        <table schema="test" tableName="role" domainObjectName="Role"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
+        </table>
+        <table schema="test" tableName="user" domainObjectName="User"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
+        </table>
+        <table schema="test" tableName="user_role" domainObjectName="UserRole"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
+        </table>
+        <!--<table schema="test" tableName="receive_msg" domainObjectName="ReceiveMsg"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+            <!--&lt;!&ndash;<columnRenamingRule searchString="^D_" replaceString=""/> &ndash;&gt;-->
+        <!--</table>-->
 
     </context>
 </generatorConfiguration>
