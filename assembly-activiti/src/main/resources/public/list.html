@@ -1,0 +1,68 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen"/>
+    <script src="js/jstools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/raphael.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="js/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery/jquery.progressbar.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery/jquery.asyncqueue.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="js/Color.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/Polyline.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/ActivityImpl.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/ActivitiRest.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/LineBreakMeasurer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/ProcessDiagramGenerator.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/ProcessDiagramCanvas.js" type="text/javascript" charset="utf-8"></script>
+
+    <style type="text/css" media="screen">
+
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div>
+        <sapn><a href="/editor-app/editor.html" name="新建流程">新建流程</a></sapn>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>模型名称</th>
+                <th>key</th>
+                <th>版本</th>
+                <th>部署ID</th>
+                <th>创建时间</th>
+                <th>最后更新时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="data : ${models}">
+                <td th:text="${data.id}">LeaveBill:1:4</td>
+                <td>
+                    <a th:href="@{/modeler.html(modelId=${data.id})}" class="font-blue" th:text="${data.name}">流程名称</a>
+                </td>
+                <td th:text="${data.key}">1</td>
+                <td th:text="${data.version}"></td>
+                <td th:text="${data.deploymentId}"></td>
+                <td th:text="${data.createTime}">
+                    2018-02-25 17:28:35
+                </td>
+                <td th:text="${data.lastUpdateTime}">
+                    2018-02-25 17:28:35
+                </td>
+                <td>
+                    <a href="javascript:;" th:attrappend="objId=${data.id}" class="font-blue deployBtn">发布流程</a>&nbsp;&nbsp;
+                    <a th:href="@{/crm/model/export/{modelId}(modelId=${data.id})}" class="font-blue">导出</a>&nbsp;&nbsp;
+                    <a href="javascript:;" th:attrappend="objId=${data.id}" class="font-blue delBtn">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

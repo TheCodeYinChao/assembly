@@ -22,6 +22,7 @@
     <module>assembly-mq</module>
     <module>assembly-nosql</module>
     <module>assembly-activiti</module>
+    <module>test</module>
   </modules>
 
   <properties>

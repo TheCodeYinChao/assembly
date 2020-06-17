@@ -38,48 +38,28 @@
         <!--selectByExampleQueryId="false">-->
         <!--&lt;!&ndash;<columnRenamingRule searchString="^D_" replaceString=""/> &ndash;&gt;-->
         <!--</table>-->
-        <table schema="test" tableName="per_oper_log" domainObjectName="PerOperLog"
+        <table schema="test" tableName="pm_org_position" domainObjectName="PmOrgPosition"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
         </table>
-        <table schema="test" tableName="per_permission" domainObjectName="PerPermission"
+        <table schema="test" tableName="pm_user_org" domainObjectName="PmUserOrg"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
         </table>
-        <table schema="test" tableName="per_role_permission" domainObjectName="PerRolePermission"
+        <table schema="test" tableName="pm_user_position" domainObjectName="PmUserPosition"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
         </table>
-        <table schema="test" tableName="pm_dictionaries" domainObjectName="PmDictionaries"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
-        </table>
-        <table schema="test" tableName="role" domainObjectName="Role"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
-        </table>
-        <table schema="test" tableName="user" domainObjectName="User"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
-        </table>
-        <table schema="test" tableName="user_role" domainObjectName="UserRole"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!--<columnRenamingRule searchString="^D_" replaceString=""/> -->
-        </table>
+
+
+
+
         <!--<table schema="test" tableName="receive_msg" domainObjectName="ReceiveMsg"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
